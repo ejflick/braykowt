@@ -15,10 +15,10 @@ end
 
 function love.draw()
     push:start()
-    Play:draw()
+    StateManager:draw()
     push:finish()
 end
 
 function love.update(dt)
-    Play:update(dt)
+    StateManager:update(dt)
 end
