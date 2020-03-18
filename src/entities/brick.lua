@@ -1,0 +1,1 @@
+Brick = Entity:extend()
