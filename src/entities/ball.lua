@@ -14,12 +14,18 @@ local NORMALIZED_SPEED = 500
 function Ball:new(brickGrid)
     Ball.super.new(self, (GAME_WIDTH / 2) - (BALL_WIDTH / 2), (GAME_HEIGHT / 2) - (BALL_HEIGHT / 2))
 
+    self.startX, self.startY = self.x, self.y
+
     self.width = BALL_WIDTH
     self.height = BALL_HEIGHT
     self.brickGrid = brickGrid
 
     -- Pick a random angle between 
     self:setAngle(math.random(MIN_ANGLE_MULTIPLIER, MAX_ANGLE_MULTIPLIER))
+
+    self.respawning = false
+    self.respawnTimer = 0
+    self.respawnSlowdown = 1
 end
 
 function Ball:setAngle(newAngle)
@@ -29,8 +35,16 @@ function Ball:setAngle(newAngle)
 end
 
 function Ball:update(dt)
-    self.x = self.x + self.xVel * dt
-    self.y = self.y + self.yVel * dt
+    if self.respawning then
+        self.respawnTimer = self.respawnTimer - dt
+        if self.respawnTimer <= 0 then
+            self.respawning = false
+            self.respawnSlowdown = 1
+        end
+    end
+
+    self.x = self.x + self.xVel * dt * self.respawnSlowdown
+    self.y = self.y + self.yVel * dt * self.respawnSlowdown
 
     self:checkWallCollision()
     self:checkPaddleCollision()
@@ -40,16 +54,26 @@ end
 function Ball:checkWallCollision()
     -- TODO: This is hella broken.
 
-    collision = false
+    if self.y > GAME_HEIGHT - BALL_HEIGHT then
+        self:respawn()
+        return
+    end
+
     if self.x < 0 or self.x > GAME_WIDTH - BALL_WIDTH then
         self.xVel = -self.xVel
     end
 
-    if self.y < 0 or self.y > GAME_HEIGHT - BALL_HEIGHT then
+    if self.y < 0 then
         self.yVel = -self.yVel
     end
+end
 
-    return collision
+function Ball:respawn()
+    self.respawning = true
+    self.respawnTimer = 1
+    self.respawnSlowdown = 0.2
+    self.x = self.startX
+    self.y = self.startY
 end
 
 function Ball:checkPaddleCollision()
@@ -102,5 +126,6 @@ end
 
 function Ball:draw()
     love.graphics.setColor(0.8, 0.8, 0.8)
+    love.graphics.print("Respawn: " .. self.respawnTimer, 0, 0)
     love.graphics.rectangle("fill", self.x, self.y, BALL_WIDTH, BALL_HEIGHT)
 end

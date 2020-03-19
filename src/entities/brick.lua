@@ -34,7 +34,6 @@ end
 
 function Brick:draw()
     -- Everything red for now...lol.
-    -- love.graphics.setColor(219/256, 61/256, 61/256, 1 - ((MAX_HEALTH - self.health) / MAX_HEALTH) * 0.6)
     local color = self.color[self.health]
     love.graphics.setColor(color[1]/256, color[2]/256, color[3]/256)
     draw("fill", self.x, self.y, self.width, self.height)
