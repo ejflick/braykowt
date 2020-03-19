@@ -1,5 +1,5 @@
-GAME_WIDTH, GAME_HEIGHT = 1080, 720 --fixed game resolution
-WINDOW_WIDTH, WINDOW_HEIGHT = 1080, 720
+GAME_WIDTH, GAME_HEIGHT = 970, 720 --fixed game resolution
+WINDOW_WIDTH, WINDOW_HEIGHT = 970, 720
 
 require "util"
 require "lib/require"
@@ -7,6 +7,7 @@ Object = require "lib/classic"
 local push = require "lib/push"
 
 require "src/entities/entity"
+require "src/entities/brick"
 require "src/entities/paddle"
 require "src/entities/ball"
 
