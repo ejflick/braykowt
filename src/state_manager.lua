@@ -12,10 +12,6 @@ function StateManager:addState(state)
         print("Default state changed")
     end
 
-    for key,value in pairs(state) do
-        print("found member " .. key);
-    end
-
     print("Registered " .. state.name)
 end
 
@@ -28,14 +24,18 @@ function StateManager:update(dt)
 end
 
 function StateManager:change(newState)
+    local previousState = self.currentState
+
     if self.currentState then
-        GAME_STATES[newState]:onChange(self.currentState)
+        GAME_STATES[newState]:onExit(self.currentState.name)
     end
 
     self.currentState = GAME_STATES[newState]
 
     if not self.currentState.loaded then
         self.currentState:__onFirstLoad()
+    else
+        self.currentState:onEnter(previousState.name)
     end
 end
 

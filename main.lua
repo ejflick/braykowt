@@ -22,9 +22,13 @@ push:setupScreen(GAME_WIDTH,
                  {fullscreen = false, resizable = true})
 ]]
 
+FONT_SMALL = love.graphics.newFont("resources/fonts/VT323-Regular.ttf", 32, "mono")
+FONT_LARGE = love.graphics.newFont("resources/fonts/VT323-Regular.ttf", 64, "mono")
+
 function love.load()
     love.mouse.setVisible(false)
     love.window.setMode(GAME_WIDTH, GAME_HEIGHT)
+    love.graphics.setDefaultFilter("nearest", "nearest")
     StateManager:start()
 end
 

@@ -22,10 +22,7 @@ function Ball:new(brickGrid)
 
     -- Pick a random angle between 
     self:setAngle(math.random(MIN_ANGLE_MULTIPLIER, MAX_ANGLE_MULTIPLIER))
-
-    self.respawning = false
-    self.respawnTimer = 0
-    self.respawnSlowdown = 1
+    self:respawn()
 end
 
 function Ball:setAngle(newAngle)
@@ -56,6 +53,7 @@ function Ball:checkWallCollision()
 
     if self.y > GAME_HEIGHT - BALL_HEIGHT then
         self:respawn()
+        LIVES = LIVES - 1
         return
     end
 
@@ -96,6 +94,8 @@ function Ball:checkPaddleCollision()
     -- Transform angle as to make y negative
     self:setAngle(newAngle + PI)
 
+    SCORE_INCREMENT = 1
+
     return true
 end
 
@@ -119,6 +119,12 @@ function Ball:checkBrickCollision()
                 if brick.health == 0 then
                     table.remove(row, x)
                 end
+
+                SCORE = SCORE + SCORE_INCREMENT
+
+                if SCORE_INCREMENT < 3 then
+                    SCORE_INCREMENT = SCORE_INCREMENT + 1
+                end
             end
         end
     end
@@ -126,6 +132,5 @@ end
 
 function Ball:draw()
     love.graphics.setColor(0.8, 0.8, 0.8)
-    love.graphics.print("Respawn: " .. self.respawnTimer, 0, 0)
     love.graphics.rectangle("fill", self.x, self.y, BALL_WIDTH, BALL_HEIGHT)
 end

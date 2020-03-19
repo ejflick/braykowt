@@ -19,7 +19,10 @@ end
 function State:onFirstLoad()
 end
 
-function State:onChange(newScene)
+function State:onEnter(oldScene)
+end
+
+function State:onExit(newScene)
     -- Called when changing from this scene to another
 end
 
