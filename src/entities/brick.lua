@@ -1,16 +1,31 @@
 Brick = Entity:extend()
 
+Brick.COLOR_PALETTE = {
+    RED = {
+        {132, 24, 0},
+        {172, 80, 48},
+        {208, 18, 92}
+    },
+    GREEN = {
+        {56, 124, 100},
+        {104, 180, 148}
+    },
+    BLUE = {
+        {104, 116, 208}
+    }
+}
+
 local draw = love.graphics.rectangle
 
-local MAX_HEALTH = 3
-
-BRICK_RED, BRICK_ORANGE, BRICK_YELLOW, BRICK_GREEN, BRICK_INDIGO, BRICK_VIOLET = 1, 2, 3, 4, 5, 6
-
-function Brick:new(x, y, width, height, color)
+function Brick:new(x, y, width, height, color, health)
     Brick.super.new(self, x, y)
-    self.health = MAX_HEALTH
+    self.health = health
     self.width = width
     self.height = height
+    self.right = self.x + width
+    self.bottom = self.y + height
+
+    self.color = color
 end
 
 function Brick:update(dt)
@@ -19,7 +34,9 @@ end
 
 function Brick:draw()
     -- Everything red for now...lol.
-    love.graphics.setColor(219/256, 61/256, 61/256, self.health/MAX_HEALTH)
+    -- love.graphics.setColor(219/256, 61/256, 61/256, 1 - ((MAX_HEALTH - self.health) / MAX_HEALTH) * 0.6)
+    local color = self.color[self.health]
+    love.graphics.setColor(color[1]/256, color[2]/256, color[3]/256)
     draw("fill", self.x, self.y, self.width, self.height)
 end
 

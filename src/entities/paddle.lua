@@ -14,6 +14,7 @@ function Paddle:new()
 end
 
 function Paddle:update(dt)
+    --[[
     if love.keyboard.isDown("left") then
         self.x = self.x - MOVE_SPEED * dt
     elseif love.keyboard.isDown("right") then
@@ -25,9 +26,16 @@ function Paddle:update(dt)
     elseif self.x > GAME_WIDTH - self.width then
         self.x = GAME_WIDTH - self.width
     end
+    ]]
+    local mouseX = love.mouse.getX()
+
+    if mouseX < GAME_WIDTH - self.width then
+        self.x = love.mouse.getX()
+    end
 end
 
 function Paddle:draw()
-    love.graphics.setColor(66/256, 135/256, 245/256)
+    --love.graphics.setColor(66/256, 135/256, 245/256)
+    love.graphics.setColor(0.9, 0.9, 0.9)
     love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
 end

@@ -9,13 +9,14 @@ local MIN_ANGLE_MULTIPLIER = 2/9
 local MAX_ANGLE_MULTIPLIER = 1 - MIN_ANGLE_MULTIPLIER
 local ANGLE_DIFFERENTIAL = MAX_ANGLE_MULTIPLIER - MIN_ANGLE_MULTIPLIER
 
-local NORMALIZED_SPEED = 350
+local NORMALIZED_SPEED = 500
 
-function Ball:new(x, y)
-    Ball.super.new(self, x, y)
+function Ball:new(brickGrid)
+    Ball.super.new(self, (GAME_WIDTH / 2) - (BALL_WIDTH / 2), (GAME_HEIGHT / 2) - (BALL_HEIGHT / 2))
 
     self.width = BALL_WIDTH
     self.height = BALL_HEIGHT
+    self.brickGrid = brickGrid
 
     -- Pick a random angle between 
     self:setAngle(math.random(MIN_ANGLE_MULTIPLIER, MAX_ANGLE_MULTIPLIER))
@@ -33,11 +34,13 @@ function Ball:update(dt)
 
     self:checkWallCollision()
     self:checkPaddleCollision()
+    self:checkBrickCollision()
 end
 
 function Ball:checkWallCollision()
-    collision = false
+    -- TODO: This is hella broken.
 
+    collision = false
     if self.x < 0 or self.x > GAME_WIDTH - BALL_WIDTH then
         self.xVel = -self.xVel
     end
@@ -70,6 +73,31 @@ function Ball:checkPaddleCollision()
     self:setAngle(newAngle + PI)
 
     return true
+end
+
+function Ball:checkBrickCollision()
+    -- TODO: Refactor AABB collision out of paddle collision so I can use with this
+    for y, row in ipairs(self.brickGrid) do
+        for x, brick in ipairs(row) do
+            if not (self.y > brick.bottom or
+            self.y + self.height < brick.y or
+            self.x > brick.right or
+            self.x + self.width < brick.x) then
+                brick:loseHealth()
+
+                -- Change velocity depending on what side we hit the brick
+                if self.x < brick.right or self.x + self.width > brick.x then
+                    self.yVel = -self.yVel
+                else
+                    self.xVel = -self.xVel
+                end
+
+                if brick.health == 0 then
+                    table.remove(row, x)
+                end
+            end
+        end
+    end
 end
 
 function Ball:draw()

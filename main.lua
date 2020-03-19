@@ -14,21 +14,25 @@ require "src/entities/ball"
 require "src/state"
 require "src/state_manager"
 
+--[[
 push:setupScreen(GAME_WIDTH,
                  GAME_HEIGHT,
                  WINDOW_WIDTH,
                  WINDOW_HEIGHT,
                  {fullscreen = false, resizable = true})
+]]
 
 function love.load()
+    love.mouse.setVisible(false)
+    love.window.setMode(GAME_WIDTH, GAME_HEIGHT)
     StateManager:start()
 end
 
 function love.draw()
-    push:start()
-    love.graphics.setBackgroundColor(0.5, 0.5, 0.5)
+    --push:start()
+    love.graphics.setBackgroundColor(0.25, 0.25, 0.25)
     StateManager:draw()
-    push:finish()
+    --push:finish()
 end
 
 function love.update(dt)
