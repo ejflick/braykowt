@@ -29,7 +29,7 @@ function Play:fillBrickGrid()
             if y == 1 then
                 color = Brick.COLOR_PALETTE.RED
                 health = 3
-            elseif y == 2 then
+            elseif y == 2 or y == 3 then
                 color = Brick.COLOR_PALETTE.GREEN
                 health = 2
             end
@@ -55,6 +55,12 @@ end
 function Play:update(dt)
     PADDLE:update(dt)
     BALL:update(dt)
+end
+
+function Play:keypressed(key, scancode, isrepeat)
+    if key == "escape" and not isrepeat then
+        StateManager:change("Pause")
+    end
 end
 
 Play:init()

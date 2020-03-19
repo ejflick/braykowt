@@ -38,3 +38,7 @@ end
 function love.update(dt)
     StateManager:update(dt)
 end
+
+function love.keypressed(key, scancode, isrepeat)
+    StateManager:keypressed(key, scancode, isrepeat)
+end

@@ -12,6 +12,10 @@ function StateManager:addState(state)
         print("Default state changed")
     end
 
+    for key,value in pairs(state) do
+        print("found member " .. key);
+    end
+
     print("Registered " .. state.name)
 end
 
@@ -25,7 +29,7 @@ end
 
 function StateManager:change(newState)
     if self.currentState then
-        GAME_STATES[newState]:change(self.currentState)
+        GAME_STATES[newState]:onChange(self.currentState)
     end
 
     self.currentState = GAME_STATES[newState]
@@ -41,6 +45,10 @@ end
 
 function StateManager:drawState(state)
     GAME_STATES[state]:draw()
+end
+
+function StateManager:keypressed(key, scancode, isrepeat)
+    self.currentState:keypressed(key, scancode, isrepeat)
 end
 
 require.tree "src/states"

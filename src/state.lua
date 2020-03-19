@@ -22,3 +22,12 @@ end
 function State:onChange(newScene)
     -- Called when changing from this scene to another
 end
+
+function State:update(dt)
+end
+
+function State:draw()
+end
+
+function State:keypressed(key, scancode, isrepeat)
+end
