@@ -1,6 +1,7 @@
 Play = State:extend()
 
 local COLUMNS_OF_BRICKS = 14
+local ROWS_OF_BRICKS = 5
 
 function Play:init()
     Play.super.new(self, {default = true, name = "Play"})

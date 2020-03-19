@@ -1,6 +1,7 @@
 GAME_WIDTH, GAME_HEIGHT = 1080, 720 --fixed game resolution
 WINDOW_WIDTH, WINDOW_HEIGHT = 1080, 720
 
+require "util"
 require "lib/require"
 Object = require "lib/classic"
 local push = require "lib/push"

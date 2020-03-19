@@ -3,7 +3,7 @@ Paddle = Entity:extend()
 local WIDTH = 100
 local HEIGHT = 15
 
-local MOVE_SPEED = 250
+local MOVE_SPEED = 350
 
 function Paddle:new()
     local startingX = (GAME_WIDTH / 2) - (WIDTH / 2)

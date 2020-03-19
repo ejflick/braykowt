@@ -1,7 +1,15 @@
 Ball = Entity:extend()
 
+local PI = math.pi
+
 local BALL_WIDTH = 14
 local BALL_HEIGHT = 14
+
+local MIN_ANGLE_MULTIPLIER = 2/9
+local MAX_ANGLE_MULTIPLIER = 1 - MIN_ANGLE_MULTIPLIER
+local ANGLE_DIFFERENTIAL = MAX_ANGLE_MULTIPLIER - MIN_ANGLE_MULTIPLIER
+
+local NORMALIZED_SPEED = 350
 
 function Ball:new(x, y)
     Ball.super.new(self, x, y)
@@ -9,8 +17,14 @@ function Ball:new(x, y)
     self.width = BALL_WIDTH
     self.height = BALL_HEIGHT
 
-    self.xVel = 300
-    self.yVel = 200
+    -- Pick a random angle between 
+    self:setAngle(math.random(MIN_ANGLE_MULTIPLIER, MAX_ANGLE_MULTIPLIER))
+end
+
+function Ball:setAngle(newAngle)
+    self.angle = newAngle
+    self.xVel = math.cos(newAngle) * NORMALIZED_SPEED
+    self.yVel = math.sin(newAngle) * NORMALIZED_SPEED
 end
 
 function Ball:update(dt)
@@ -49,12 +63,16 @@ function Ball:checkPaddleCollision()
         return false
     end
 
-    self.yVel = -self.yVel
+    -- Only allow percentage between 0 and 1
+    local distanceIntoPaddle = clamp(0, (self.x - PADDLE.x) / PADDLE.width, 1)
+    local newAngle = MIN_ANGLE_MULTIPLIER + (ANGLE_DIFFERENTIAL * distanceIntoPaddle) * PI
+    -- Transform angle as to make y negative
+    self:setAngle(newAngle + PI)
 
     return true
 end
 
 function Ball:draw()
-    love.graphics.setColor(1, 1, 1)
+    love.graphics.setColor(0.8, 0.8, 0.8)
     love.graphics.rectangle("fill", self.x, self.y, BALL_WIDTH, BALL_HEIGHT)
 end
