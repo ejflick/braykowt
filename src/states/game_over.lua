@@ -1,6 +1,6 @@
 GameOver = State:extend()
 
-local GAME_OVER_TEXT = "Game over!\nScore: "
+local GAME_OVER_TEXT = "Game over!"
 
 function GameOver:init()
     GameOver.super.new(self, {name = "GameOver"})
@@ -12,7 +12,7 @@ function GameOver:draw()
     local y = (GAME_HEIGHT / 2) - (FONT_LARGE:getHeight() / 2)
     love.graphics.setFont(FONT_LARGE)
     love.graphics.setColor(0.9, 0.9, 0.9)
-    love.graphics.printf(GAME_OVER_TEXT .. SCORE, 0, y, GAME_WIDTH, "center")
+    love.graphics.printf(GAME_OVER_TEXT, 0, y, GAME_WIDTH, "center")
 end
 
 function GameOver:keypressed(key, scancode, isrepeat)
