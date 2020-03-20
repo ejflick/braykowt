@@ -75,16 +75,7 @@ function Ball:respawn()
 end
 
 function Ball:checkPaddleCollision()
-    local ballTop, ballBottom = self.y, self.y + self.height
-    local ballLeft, ballRight = self.x, self.x + self.width
-
-    local paddleTop, paddleBottom = PADDLE.y, PADDLE.y + PADDLE.height
-    local paddleLeft, paddleRight = PADDLE.x, PADDLE.x + PADDLE.width
-
-    if paddleTop > ballBottom or
-    paddleBottom < ballTop or
-    paddleLeft > ballRight or
-    paddleRight < ballLeft then
+    if not aabbCollision(self, PADDLE) then
         return false
     end
 
@@ -103,10 +94,7 @@ function Ball:checkBrickCollision()
     -- TODO: Refactor AABB collision out of paddle collision so I can use with this
     for y, row in ipairs(self.brickGrid) do
         for x, brick in ipairs(row) do
-            if not (self.y > brick.bottom or
-            self.y + self.height < brick.y or
-            self.x > brick.right or
-            self.x + self.width < brick.x) then
+            if aabbCollision(self, brick) then
                 brick:loseHealth()
 
                 -- Change velocity depending on what side we hit the brick
@@ -132,6 +120,8 @@ function Ball:checkBrickCollision()
     end
 end
 
+-- Stolen from this SO answer:
+-- https://stackoverflow.com/a/13349505
 function Ball:getCollisionSide(brick)
     local ballLeft, ballRight = self.x, self.x + self.width
     local ballTop, ballBottom = self.y, self.y + self.height
