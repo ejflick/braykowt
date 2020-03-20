@@ -11,7 +11,7 @@ end
 -- Detects collision between two entities of the Entity class.
 function aabbCollision(o1, o2)
     local o1Top, o1Bottom = o1.y, o1.y + o1.height
-    local o1Left, o1Right = o1.x, o1.x + o2.width
+    local o1Left, o1Right = o1.x, o1.x + o1.width
 
     local o2Top, o2Bottom = o2.y, o2.y + o2.height
     local o2Left, o2Right = o2.x, o2.x + o2.width

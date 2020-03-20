@@ -8,7 +8,8 @@ local BALL_HEIGHT = 14
 local NORMALIZED_SPEED = 550
 
 function Ball:new(brickGrid)
-    Ball.super.new(self, (GAME_WIDTH / 2) - (BALL_WIDTH / 2), (GAME_HEIGHT / 2) - (BALL_HEIGHT / 2))
+    --Ball.super.new(self, (GAME_WIDTH / 2) - (BALL_WIDTH / 2), (GAME_HEIGHT / 2) - (BALL_HEIGHT / 2))
+    Ball.super.new(self, 5, 5)
 
     self.startX, self.startY = self.x, self.y
 
@@ -77,7 +78,7 @@ function Ball:checkPaddleCollision()
 
     -- Only allow percentage between 0 and 1
     local distanceIntoPaddle = clamp(0, (self.x - PADDLE.x) / PADDLE.width, 1)
-    --local newAngle = MIN_ANGLE_MULTIPLIER + (ANGLE_DIFFERENTIAL * distanceIntoPaddle) * PI
+    -- Range between 2pi/9 and 7pi/9
     local newAngle = (2 + 5 * distanceIntoPaddle) * PI / 9 
     -- Transform angle as to make y negative
     self:setAngle(newAngle + PI)
@@ -112,6 +113,7 @@ function Ball:checkBrickCollision()
                 if SCORE_INCREMENT < 3 then
                     SCORE_INCREMENT = SCORE_INCREMENT + 1
                 end
+                return
             end
         end
     end
