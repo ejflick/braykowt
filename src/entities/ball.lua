@@ -5,10 +5,6 @@ local PI = math.pi
 local BALL_WIDTH = 14
 local BALL_HEIGHT = 14
 
-local MIN_ANGLE_MULTIPLIER = 2/9
-local MAX_ANGLE_MULTIPLIER = 1 - MIN_ANGLE_MULTIPLIER
-local ANGLE_DIFFERENTIAL = MAX_ANGLE_MULTIPLIER - MIN_ANGLE_MULTIPLIER
-
 local NORMALIZED_SPEED = 550
 
 function Ball:new(brickGrid)
@@ -21,7 +17,7 @@ function Ball:new(brickGrid)
     self.brickGrid = brickGrid
 
     -- Pick a random angle between 
-    self:setAngle(math.random(MIN_ANGLE_MULTIPLIER, MAX_ANGLE_MULTIPLIER))
+    self:setAngle(math.random(2, 7) * PI / 9)
     self:respawn()
 end
 
@@ -81,7 +77,8 @@ function Ball:checkPaddleCollision()
 
     -- Only allow percentage between 0 and 1
     local distanceIntoPaddle = clamp(0, (self.x - PADDLE.x) / PADDLE.width, 1)
-    local newAngle = MIN_ANGLE_MULTIPLIER + (ANGLE_DIFFERENTIAL * distanceIntoPaddle) * PI
+    --local newAngle = MIN_ANGLE_MULTIPLIER + (ANGLE_DIFFERENTIAL * distanceIntoPaddle) * PI
+    local newAngle = (2 + 5 * distanceIntoPaddle) * PI / 9 
     -- Transform angle as to make y negative
     self:setAngle(newAngle + PI)
 
