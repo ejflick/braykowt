@@ -54,12 +54,17 @@ function Ball:checkWallCollision()
         return
     end
 
-    if self.x < 0 or self.x > GAME_WIDTH - BALL_WIDTH then
+    if self.x < 0 then
         self.xVel = -self.xVel
+        self.x = 0
+    elseif self.x > GAME_WIDTH - BALL_WIDTH then
+        self.xVel = -self.xVel
+        self.x = GAME_WIDTH - BALL_WIDTH
     end
 
     if self.y < 0 then
         self.yVel = -self.yVel
+        self.y = 0
     end
 end
 
