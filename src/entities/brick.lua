@@ -28,10 +28,6 @@ function Brick:new(x, y, width, height, color, health)
     self.color = color
 end
 
-function Brick:update(dt)
-    -- Nothing to do. Static entity.
-end
-
 function Brick:draw()
     -- Everything red for now...lol.
     local color = self.color[self.health]

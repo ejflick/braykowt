@@ -9,7 +9,7 @@ local MIN_ANGLE_MULTIPLIER = 2/9
 local MAX_ANGLE_MULTIPLIER = 1 - MIN_ANGLE_MULTIPLIER
 local ANGLE_DIFFERENTIAL = MAX_ANGLE_MULTIPLIER - MIN_ANGLE_MULTIPLIER
 
-local NORMALIZED_SPEED = 500
+local NORMALIZED_SPEED = 550
 
 function Ball:new(brickGrid)
     Ball.super.new(self, (GAME_WIDTH / 2) - (BALL_WIDTH / 2), (GAME_HEIGHT / 2) - (BALL_HEIGHT / 2))
@@ -110,14 +110,16 @@ function Ball:checkBrickCollision()
                 brick:loseHealth()
 
                 -- Change velocity depending on what side we hit the brick
-                if self.x < brick.right or self.x + self.width > brick.x then
-                    self.yVel = -self.yVel
-                else
+                local collisionSide = self:getCollisionSide(brick)
+                if collisionSide == "left" or collisionSide == "right" then
                     self.xVel = -self.xVel
+                else
+                    self.yVel = -self.yVel
                 end
 
                 if brick.health == 0 then
                     table.remove(row, x)
+                    BRICKS_LEFT = BRICKS_LEFT - 1
                 end
 
                 SCORE = SCORE + SCORE_INCREMENT
@@ -128,6 +130,30 @@ function Ball:checkBrickCollision()
             end
         end
     end
+end
+
+function Ball:getCollisionSide(brick)
+    local ballLeft, ballRight = self.x, self.x + self.width
+    local ballTop, ballBottom = self.y, self.y + self.height
+
+    local brickLeft, brickRight = brick.x, brick.x + brick.width
+    local brickTop, brickBottom = brick.y, brick.y + brick.height
+
+    -- Collision magnitudes
+    local lColl = ballRight - brickLeft
+    local rColl = brickRight - ballLeft
+    local tColl = ballBottom - brickTop
+    local bColl = brickBottom - ballTop
+
+    if tColl < bColl and tColl < lColl and tColl < rColl then
+        return "top"
+    elseif bColl < tColl and bColl < lColl and bColl < rColl then
+        return "bottom"
+    elseif lColl < tColl and lColl < rColl and lColl < bColl then
+        return "left"
+    end
+
+    return "right"
 end
 
 function Ball:draw()

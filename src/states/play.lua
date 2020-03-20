@@ -2,6 +2,8 @@ Play = State:extend()
 
 local COLUMNS_OF_BRICKS = 12
 local ROWS_OF_BRICKS = 5
+-- local COLUMNS_OF_BRICKS = 1
+-- local ROWS_OF_BRICKS = 1
 local BRICK_PADDING = 10 -- Padding in pixels
 local BRICK_WIDTH = 70
 local BRICK_HEIGHT = 18
@@ -21,6 +23,7 @@ function Play:newGame()
     LIVES = 3
     SCORE = 0
     SCORE_INCREMENT = 1
+    BRICKS_LEFT = COLUMNS_OF_BRICKS * ROWS_OF_BRICKS
 end
 
 function Play:fillBrickGrid()
